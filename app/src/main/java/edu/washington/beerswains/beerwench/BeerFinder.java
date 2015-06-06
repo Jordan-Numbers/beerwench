@@ -23,9 +23,29 @@ public class BeerFinder {
         }
     }
 
+    public void findBeerMaker(String id) {
+        try {
+            String url = "https://api.brewerydb.com/v2/beer/" + URLEncoder.encode(id, "UTF-8") + "/breweries/?key=" + key + "&format=json";
+            JSONParser parser = new JSONParser();
+            parser.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void findBreweryByName(String name) {
         try {
             String url = "https://api.brewerydb.com/v2/breweries?name=" + URLEncoder.encode(name, "UTF-8") + "&key=" + key + "&format=json";
+            JSONParser parser = new JSONParser();
+            parser.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void findBreweryById(String id) {
+        try {
+            String url = "https://api.brewerydb.com/v2/breweries?id=" + URLEncoder.encode(id, "UTF-8") + "&key=" + key + "&format=json";
             JSONParser parser = new JSONParser();
             parser.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
         } catch (Exception e) {

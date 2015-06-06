@@ -22,8 +22,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BeerFinder finder = new BeerFinder();
-        finder.findBreweryByName("Alaskan Brewing Company");
-        finder.findBeerByName("Blue Moon White IPA");
+        //finder.findBeerByName("Blue Moon White IPA");
+        finder.findBreweryByName("blue moon brewing company");
+        //finder.findBeerMaker("Ulrs9I");
     }
 
     @Override
