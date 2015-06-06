@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.parse.Parse;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,18 +22,15 @@ import java.util.Map;
  */
 public class BeerApplication extends Application {
     private Map<String, List<Beer>> userBeers;
-/*
+
     @Override
     public void onCreate() {
-        try {
-            FileInputStream fis = this.openFileInput("Beer Squire Beers.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            userBeers = (HashMap<String, List<Beer>>) ois.readObject();
-        } catch(Exception e) {
-            userBeers = new HashMap<String, List<Beer>>();
-        }
-    }
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
 
+        Parse.initialize(this, "1x5WB9hiFmJPBBy23a0hWhFhgLHUzD605yLIaWxi", "qjopJX3wOEpbZNhdq303AWSIp9sMfFo1yTgarieb");
+    }
+/*
     @Override
     public void onDestroy() {
         try {

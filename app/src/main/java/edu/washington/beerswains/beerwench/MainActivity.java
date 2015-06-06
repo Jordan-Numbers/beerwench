@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseObject;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -23,8 +25,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         BeerFinder finder = new BeerFinder();
         //finder.findBeerByName("Blue Moon White IPA");
-        finder.findBreweryByName("blue moon brewing company");
+        //finder.findBreweryByName("blue moon brewing company");
         //finder.findBeerMaker("Ulrs9I");
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
     }
 
     @Override
