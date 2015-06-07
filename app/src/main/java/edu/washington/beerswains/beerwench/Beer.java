@@ -1,9 +1,11 @@
 package edu.washington.beerswains.beerwench;
 
+import java.io.Serializable;
+
 /**
  * Created by Smyth on 6/6/2015.
  */
-public class Beer {
+public class Beer implements Serializable {
     private String name;
     private String abv;
     private String producer;

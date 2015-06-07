@@ -1,5 +1,6 @@
 package edu.washington.beerswains.beerwench;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -102,6 +103,13 @@ public class BeerSearch extends ActionBarActivity {
         } else {
             resultView.setText("No Results Found");
         }
+        resultView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BeerSearch.this, BeerMapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public ArrayList<Beer> parseResults(JSONObject data) {
@@ -118,7 +126,10 @@ public class BeerSearch extends ActionBarActivity {
                     JSONObject labels = topicData.getJSONObject("labels");
                     String iconUrl = labels.getString("icon");
                     String abv = topicData.getString("abv") + "%";
-                    Beer beer = new Beer(title, abv, "test", iconUrl, id, description);
+                    JSONArray producerData = topicData.getJSONArray("breweries");
+                    JSONObject breweryInfo = (JSONObject) producerData.get(0);
+                    String bName = breweryInfo.getString("name");
+                    Beer beer = new Beer(title, abv, bName, iconUrl, id, description);
                     beers.add(beer);
                 }
             }
