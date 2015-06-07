@@ -27,9 +27,9 @@ public class MainActivity extends ActionBarActivity {
         //finder.findBeerByName("Blue Moon White IPA");
         //finder.findBreweryByName("blue moon brewing company");
         //finder.findBeerMaker("Ulrs9I");
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        //ParseObject testObject = new ParseObject("TestObject");
+        //testObject.put("foo", "bar");
+        //testObject.saveInBackground();
     }
 
     @Override
