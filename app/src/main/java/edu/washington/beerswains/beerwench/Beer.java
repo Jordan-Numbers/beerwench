@@ -6,18 +6,18 @@ package edu.washington.beerswains.beerwench;
 public class Beer {
     private String name;
     private String abv;
-    private String type;
     private String producer;
     private String pictureUrl;
     private String id;
+    private String description;
 
-    public Beer(String name, String abv, String type, String producer, String pictureUrl, String id) {
+    public Beer(String name, String abv, String producer, String pictureUrl, String id, String description) {
         this.name = name;
         this.abv = abv;
-        this.type = type;
         this.producer = producer;
         this.pictureUrl = pictureUrl;
         this.id = id;
+        this.description = description;
     }
 
     public String getName() {
@@ -26,10 +26,6 @@ public class Beer {
 
     public String getAbv() {
         return this.abv;
-    }
-
-    public String getType() {
-        return this.type;
     }
 
     public String getProducer() {

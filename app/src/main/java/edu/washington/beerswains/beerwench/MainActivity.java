@@ -1,11 +1,14 @@
 package edu.washington.beerswains.beerwench;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.parse.ParseObject;
 
@@ -22,8 +25,16 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        BeerFinder finder = new BeerFinder();
+        setContentView(R.layout.homepage_activity);
+        //BeerFinder finder = new BeerFinder();
+        Button findBeer = (Button) findViewById(R.id.findBeerButton);
+        findBeer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BeerSearch.class);
+                startActivity(intent);
+            }
+        });
         //finder.findBeerByName("Blue Moon White IPA");
         //finder.findBreweryByName("blue moon brewing company");
         //finder.findBeerMaker("Ulrs9I");

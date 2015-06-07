@@ -1,5 +1,7 @@
 package edu.washington.beerswains.beerwench;
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -15,10 +17,14 @@ import java.io.IOException;
 
 public class JSONParser extends AsyncTask<String, Void, Boolean> {
     private JSONObject json;
+    private BeerFinder finder;
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+    }
 
+    public JSONParser(BeerFinder finder) {
+        this.finder = finder;
     }
 
     @Override
@@ -55,6 +61,7 @@ public class JSONParser extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean result) {
         Log.e("json", this.json.toString());
+        this.finder.setFound(this.json);
     }
 
     public JSONObject getJson() {
