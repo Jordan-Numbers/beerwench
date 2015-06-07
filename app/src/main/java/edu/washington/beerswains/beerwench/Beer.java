@@ -8,12 +8,16 @@ public class Beer {
     private String abv;
     private String type;
     private String producer;
+    private String pictureUrl;
+    private String id;
 
-    public Beer(String name, String abv, String type, String producer) {
+    public Beer(String name, String abv, String type, String producer, String pictureUrl, String id) {
         this.name = name;
         this.abv = abv;
         this.type = type;
         this.producer = producer;
+        this.pictureUrl = pictureUrl;
+        this.id = id;
     }
 
     public String getName() {

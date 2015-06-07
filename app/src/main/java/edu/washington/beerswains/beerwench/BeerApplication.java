@@ -30,25 +30,4 @@ public class BeerApplication extends Application {
 
         Parse.initialize(this, "1x5WB9hiFmJPBBy23a0hWhFhgLHUzD605yLIaWxi", "qjopJX3wOEpbZNhdq303AWSIp9sMfFo1yTgarieb");
     }
-/*
-    @Override
-    public void onDestroy() {
-        try {
-            FileOutputStream fos = this.openFileOutput("Beer Squire Beers.txt", Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(userBeers);
-            os.close();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            File beerFile = new File(Environment.getExternalStorageDirectory(), "Beer Squire Beers.txt");
-            ObjectOutputStream os = new ObjectOutputStream(beerFile);
-            os.writeObject(userBeers);
-            os.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    } */
 }
