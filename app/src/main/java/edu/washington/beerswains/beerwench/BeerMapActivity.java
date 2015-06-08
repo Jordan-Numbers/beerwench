@@ -1,10 +1,12 @@
 package edu.washington.beerswains.beerwench;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -24,12 +26,15 @@ import java.util.List;
 public class BeerMapActivity extends ActionBarActivity {
     private LocationManager mLocationManager;
     private GoogleMap map;
+    private Beer beer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beer_map);
-
+        Intent sentData = getIntent();
+        Bundle sentBundle = sentData.getBundleExtra("bundle");
+        this.beer = (Beer) sentBundle.getSerializable("beer");
        MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
 
@@ -75,30 +80,43 @@ public class BeerMapActivity extends ActionBarActivity {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 13));
         }
         loadStores();
-        long time = 5;
-        float distance = 10;
-        //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, this.mLocationListener);
-        //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, mLocationListener);
-
     }
 
     public void loadStores() {
         Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
-        ParseQuery query = ParseQuery.getQuery("Store").whereWithinMiles("map_location", start, 10);
-        query.findInBackground(new FindCallback<ParseObject>() {
+        final ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseQuery firstQuery = ParseQuery.getQuery("Beer").whereMatches("name", this.beer.getName());
+        firstQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
-                    for (ParseObject object : objects) {
-                        ParseGeoPoint coordinates = (ParseGeoPoint) object.get("map_location");
-                        String name = (String) object.get("name");
-                        String address = (String) object.get("address");
-                        ArrayList<Beer> beers = (ArrayList<Beer>) object.get("beers");
-                        map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address));
+                    if (objects.size() > 0) {
+                        for (ParseObject object : objects) {
+                            Log.e("object Id", object.getObjectId());
+                            ParseQuery innerQuery = ParseQuery.getQuery("Beer").whereEqualTo("objectId", object.getObjectId());
+                            ParseQuery priceQuery = ParseQuery.getQuery("Store_Price").include("beer").include("store").whereMatchesQuery("beer", innerQuery);
+                            priceQuery.findInBackground(new FindCallback<ParseObject>() {
+                                @Override
+                                public void done(List<ParseObject> objects1, ParseException e) {
+                                    if (e == null) {
+                                        for (ParseObject object : objects1) {
+                                            Log.e("object Id", object.getObjectId());
+                                            ParseObject storeData = (ParseObject) object.get("store");
+                                            ParseGeoPoint coordinates = (ParseGeoPoint) storeData.get("map_location");
+                                            String name = (String) storeData.get("name");
+                                            String address = (String) storeData.get("address");
+                                            double price = (double) object.get("price");
+                                            if (coordinates.distanceInMilesTo(start) <= 10) {
+                                                map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address + " - $" + price));
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        Toast.makeText(BeerMapActivity.this, "This beer is not available in your area", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(BeerMapActivity.this, "Unable to Load Stores", Toast.LENGTH_LONG).show();
                 }
             }
         });

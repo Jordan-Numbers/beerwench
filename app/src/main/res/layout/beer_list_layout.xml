@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <ImageView
-        android:id="@+id/img"
+        android:id="@+id/imgView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
@@ -14,8 +14,8 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/img"
-        android:layout_toRightOf="@+id/img"
+        android:layout_alignTop="@+id/imgView"
+        android:layout_toRightOf="@+id/imgView"
         android:textStyle="bold" />
 
     <TextView
@@ -25,7 +25,7 @@
         android:layout_below="@id/name"
         android:layout_gravity="center"
         android:layout_marginTop="2dip"
-        android:layout_toRightOf="@id/img"
+        android:layout_toRightOf="@id/imgView"
         android:gravity="right"
         android:textSize="8dp"
         android:textStyle="italic" />
