@@ -33,4 +33,16 @@ public class Beer implements Serializable {
     public String getProducer() {
         return this.producer;
     }
+
+    public String getPictureUrl() {
+        return this.pictureUrl;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
 }

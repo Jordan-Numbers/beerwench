@@ -7,8 +7,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BeerMapActivity extends ActionBarActivity {
@@ -31,6 +41,7 @@ public class BeerMapActivity extends ActionBarActivity {
         });
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
     }
 
     @Override
@@ -63,10 +74,33 @@ public class BeerMapActivity extends ActionBarActivity {
             LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 13));
         }
+        loadStores();
         long time = 5;
         float distance = 10;
         //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, this.mLocationListener);
         //mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, mLocationListener);
 
+    }
+
+    public void loadStores() {
+        Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        ParseQuery query = ParseQuery.getQuery("Store").whereWithinMiles("map_location", start, 10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (ParseObject object : objects) {
+                        ParseGeoPoint coordinates = (ParseGeoPoint) object.get("map_location");
+                        String name = (String) object.get("name");
+                        String address = (String) object.get("address");
+                        ArrayList<Beer> beers = (ArrayList<Beer>) object.get("beers");
+                        map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address));
+                    }
+                } else {
+                    Toast.makeText(BeerMapActivity.this, "Unable to Load Stores", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
