@@ -9,13 +9,38 @@
         android:layout_height="wrap_content"
         android:id="@+id/searchBox"></android.support.v7.widget.SearchView>
 
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:id="@+id/controlGroup"
+        android:orientation="horizontal"
+        android:layout_height="53dp"
+        android:layout_gravity="center_horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by Beer Name"
+            android:id="@+id/searchBeer" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by Abv"
+            android:id="@+id/searchAbv" />
+
+    </RadioGroup>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/beerInfo" />
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/noResults" />
 
     <ListView
         android:layout_width="match_parent"
+        android:isScrollContainer="true"
         android:layout_height="wrap_content"
         android:id="@+id/beerList" />
 

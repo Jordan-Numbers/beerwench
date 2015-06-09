@@ -99,16 +99,20 @@ public class BeerMapActivity extends ActionBarActivity {
                                 @Override
                                 public void done(List<ParseObject> objects1, ParseException e) {
                                     if (e == null) {
-                                        for (ParseObject object : objects1) {
-                                            Log.e("object Id", object.getObjectId());
-                                            ParseObject storeData = (ParseObject) object.get("store");
-                                            ParseGeoPoint coordinates = (ParseGeoPoint) storeData.get("map_location");
-                                            String name = (String) storeData.get("name");
-                                            String address = (String) storeData.get("address");
-                                            double price = (double) object.get("price");
-                                            if (coordinates.distanceInMilesTo(start) <= 10) {
-                                                map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address + " - $" + price));
+                                        if (objects1.size() > 0) {
+                                            for (ParseObject object : objects1) {
+                                                Log.e("object Id", object.getObjectId());
+                                                ParseObject storeData = (ParseObject) object.get("store");
+                                                ParseGeoPoint coordinates = (ParseGeoPoint) storeData.get("map_location");
+                                                String name = (String) storeData.get("name");
+                                                String address = (String) storeData.get("address");
+                                                double price = (double) object.get("price");
+                                                if (coordinates.distanceInMilesTo(start) <= 10) {
+                                                    map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address + " - $" + price));
+                                                }
                                             }
+                                        } else {
+                                            Toast.makeText(BeerMapActivity.this, "This beer is not available in your area", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 }

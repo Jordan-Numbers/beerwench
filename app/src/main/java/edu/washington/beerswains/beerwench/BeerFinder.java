@@ -29,6 +29,16 @@ public class BeerFinder {
         }
     }
 
+    public void findBeerByAbv(String abv) {
+        try {
+            String url = "https://api.brewerydb.com/v2/beers?abv=" + URLEncoder.encode(abv, "UTF-8") + "&key=" + key + "&withBreweries=Y&format=json";
+            JSONParser parser = new JSONParser(this);
+            parser.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void findBeerMaker(String id) {
         try {
             String url = "https://api.brewerydb.com/v2/beer/" + URLEncoder.encode(id, "UTF-8") + "/breweries/?key=" + key + "&format=json";

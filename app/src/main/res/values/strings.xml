@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">beerwench</string>
+    <string name="app_name">Beer Squire</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_beer_search">BeerSearch</string>
-    <string name="title_activity_beer_map">BeerMapActivity</string>
-    <string name="title_activity_beer_add">BeerAdd</string>
+    <string name="title_activity_beer_search">Beer Search</string>
+    <string name="title_activity_beer_map">Beer Map</string>
+    <string name="title_activity_beer_add">Add a Beer Deal</string>
+    <string name="title_activity_my_beer_list">My Beers</string>
 </resources>

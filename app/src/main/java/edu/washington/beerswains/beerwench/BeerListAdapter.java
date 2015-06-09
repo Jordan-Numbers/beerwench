@@ -1,6 +1,7 @@
 package edu.washington.beerswains.beerwench;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class BeerListAdapter extends ArrayAdapter<Beer> {
         beerName.setText(beer.getName());
 
         TextView beerPrice = (TextView) v.findViewById(R.id.price);
-        beerPrice.setText(beer.getAbv());
+        beerPrice.setText(beer.getDescription());
+        beerPrice.setGravity(Gravity.LEFT);
 
         return v;
     }
