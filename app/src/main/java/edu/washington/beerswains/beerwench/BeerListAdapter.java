@@ -47,7 +47,9 @@ public class BeerListAdapter extends ArrayAdapter<Beer> {
         beerName.setText(beer.getName());
 
         TextView beerPrice = (TextView) v.findViewById(R.id.price);
-        beerPrice.setText(beer.getPrice());
+
+        //Smyth will get price with Parse
+        //beerPrice.setText(beer.getPrice());
 
         return v;
     }
