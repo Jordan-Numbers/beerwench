@@ -77,6 +77,11 @@
     </LinearLayout>
 
     <!-- The margintop of -21 adjusts the listview to abut the bottom of the edittext. -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relWrapper"></RelativeLayout>
+
     <ListView
         android:id="@+id/search_suggest_list"
         android:layout_marginTop="-21dip"

@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_beer_search">BeerSearch</string>
+    <string name="title_activity_beer_map">BeerMapActivity</string>
+    <string name="title_activity_beer_add">BeerAdd</string>
+    <string name="title_activity_my_beer">MyBeerActivity</string>
 </resources>

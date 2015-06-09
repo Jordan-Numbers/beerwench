@@ -1,28 +1,30 @@
 package edu.washington.beerswains.beerwench;
 
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.io.Serializable;
+
 /**
  * Created by Smyth on 6/6/2015.
  */
 
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-public class Beer extends ParseObject {
+public class Beer  extends ParseObject implements Serializable {
 
     private String name;
     private String abv;
-    private String type;
     private String producer;
     private String pictureUrl;
     private String id;
+    private String description;
 
-    public Beer(String name, String abv, String type, String producer, String pictureUrl, String id) {
+    public Beer(String name, String abv, String producer, String pictureUrl, String id, String description) {
         this.name = name;
         this.abv = abv;
-        this.type = type;
         this.producer = producer;
         this.pictureUrl = pictureUrl;
         this.id = id;
+        this.description = description;
     }
 
     public String getName() {
@@ -33,15 +35,27 @@ public class Beer extends ParseObject {
         return this.abv;
     }
 
-    public String getType() {
-        return this.type;
-    }
-
     public String getProducer() {
         return this.producer;
     }
 
     public static ParseQuery<Beer> getQuery() {
         return ParseQuery.getQuery(Beer.class);
+    }
+
+    public String getPictureUrl() {
+        return this.pictureUrl;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void saveBeer() {
+        this.pinInBackground(BeerApplication);
     }
 }
