@@ -3,6 +3,7 @@ package edu.washington.beerswains.beerwench;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.support.v7.widget.SearchView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class BeerSearch extends ActionBarActivity {
     private JSONObject results;
     private ArrayList<Beer> parseBeers = new ArrayList<Beer>();
     private ArrayList<ParseObject>pBeers = new ArrayList<ParseObject>();
+    private RadioGroup searchControl;
 
 
     @Override
@@ -43,12 +46,19 @@ public class BeerSearch extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_beer_activity);
         SearchView beerSearch = (SearchView) findViewById(R.id.searchBox);
+        searchControl = (RadioGroup) findViewById(R.id.controlGroup);
         beerSearch.setQueryHint("Enter Beer Name");
         beerSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query.trim().length() > 0) {
-                    finder.findBeerByName(query);
+                    TextView noResults = (TextView) findViewById(R.id.noResults);
+                    noResults.setText("Results:");
+                    if (searchControl.getCheckedRadioButtonId() == R.id.searchBeer) {
+                        finder.findBeerByName(query);
+                    } else {
+                        finder.findBeerByAbv(query);
+                    }
                     return true;
                 }
                 return false;
@@ -65,7 +75,7 @@ public class BeerSearch extends ActionBarActivity {
                 String name = e.getPropertyName();
                 if (name.equals("found")) {
                     BeerSearch.this.results = (JSONObject) e.getNewValue();
-                    populateResults();
+                    populateResults(true);
                 }
             }
         };
@@ -73,6 +83,18 @@ public class BeerSearch extends ActionBarActivity {
         PropertyChangeSupport support = new PropertyChangeSupport(finder);
         support.addPropertyChangeListener("found", listener);
         finder.setSupport(support);
+        searchControl.check(R.id.searchBeer);
+        searchControl.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int selected) {
+                SearchView search = (SearchView) findViewById(R.id.searchBox);
+                if (selected == R.id.searchAbv) {
+                    search.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_CLASS_NUMBER);
+                } else {
+                    search.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+            }
+        });
 
 
     }
@@ -103,24 +125,28 @@ public class BeerSearch extends ActionBarActivity {
         this.results = results;
     }
 
-    public void populateResults() {
-        ArrayList<Beer> userResults = parseResults(this.results);
-        TextView resultView = (TextView) findViewById(R.id.beerInfo);
-        BeerListAdapter beerList = new BeerListAdapter(userResults, this);
-        ListView beerListView = (ListView) findViewById(R.id.beerList);
-        beerListView.setAdapter(beerList);
-        beerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> beerView, View v, int position, long id) {
-                Intent intent = new Intent(BeerSearch.this, BeerMapActivity.class);
-                BeerListAdapter adapter = (BeerListAdapter) beerView.getAdapter();
-                Beer selectedBeer = adapter.getBeer(position);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("beer", selectedBeer);
-                intent.putExtra("bundle", bundle);
-                startActivity(intent);
-            }
-        });
+    public void populateResults(boolean found) {
+        if (found) {
+            ListView beerListView = (ListView) findViewById(R.id.beerList);
+            ArrayList<Beer> userResults = parseResults(this.results);
+            BeerListAdapter beerList = new BeerListAdapter(userResults, this);
+            beerListView.setAdapter(beerList);
+            beerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> beerView, View v, int position, long id) {
+                    Intent intent = new Intent(BeerSearch.this, BeerMapActivity.class);
+                    BeerListAdapter adapter = (BeerListAdapter) beerView.getAdapter();
+                    Beer selectedBeer = adapter.getBeer(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("beer", selectedBeer);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            TextView noResults = (TextView) findViewById(R.id.noResults);
+            noResults.setText("No Results");
+        }
     }
 
     public ArrayList<Beer> parseResults(JSONObject data) {
@@ -132,10 +158,20 @@ public class BeerSearch extends ActionBarActivity {
                     Log.e("json", beerData.get(i).toString());
                     JSONObject topicData = (JSONObject) beerData.get(i);
                     String title = topicData.getString("name");
-                    String description = topicData.getString("description");
+                    String description = "";
+                    try {
+                        description = topicData.getString("description");
+                    } catch(Exception e) {
+                        description = "Description Not Available";
+                    }
                     String id = topicData.getString("id");
-                    JSONObject labels = topicData.getJSONObject("labels");
-                    String iconUrl = labels.getString("icon");
+                    String iconUrl = "";
+                    try {
+                        JSONObject labels = topicData.getJSONObject("labels");
+                        iconUrl = labels.getString("icon");
+                    } catch (Exception e) {
+                        iconUrl = "not available";
+                    }
                     String abv = topicData.getString("abv") + "% abv";
                     JSONArray producerData = topicData.getJSONArray("breweries");
                     JSONObject breweryInfo = (JSONObject) producerData.get(0);
@@ -148,49 +184,9 @@ public class BeerSearch extends ActionBarActivity {
             //pushBeersToParse();
         }
         catch (JSONException e) {
-            e.printStackTrace();
+            populateResults(false);
         }
         return beers;
     }
 
-    /*
-    public void pushBeersToParse() {
-        ParseQuery query = ParseQuery.getQuery("Store").whereMatches("name", "QFC");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    for (Beer beer : parseBeers) {
-                        ParseObject beerObject = new ParseObject("Beer");
-                        beerObject.put("name", beer.getName());
-                        beerObject.put("abv", beer.getAbv());
-                        beerObject.put("manufacturer", beer.getProducer());
-                        beerObject.put("image", beer.getPictureUrl());
-                        beerObject.put("description", beer.getDescription());
-                        beerObject.put("dbId", beer.getId());
-                        beerObject.saveInBackground();
-                        pBeers.add(beerObject);
-                        //beers.add(beerObject);
-                    }
-                    for (ParseObject object : objects) {
-                        ArrayList<ParseObject> beers = (ArrayList<ParseObject>) object.get("beers");
-                        for(ParseObject beerObject : pBeers) {
-                            ParseObject storePrice = new ParseObject("Store_Price");
-                            storePrice.put("store", object);
-                            storePrice.put("beer", beerObject);
-                            storePrice.put("price", 7.49);
-                            storePrice.saveInBackground();
-                        }
-                        for (int i = 0; i < pBeers.size(); i++) {
-                            beers.add(pBeers.get(i));
-                        }
-                        object.put("beers", beers);
-                        object.saveInBackground();
-                    }
-                } else {
-                    Toast.makeText(BeerSearch.this, "Unable to Load Stores", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    } */
 }
