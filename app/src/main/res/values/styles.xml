@@ -1,8 +1,42 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.DeviceDefault">
         <!-- Customize your theme here. -->
+        <!-- Main theme colors -->
+
+        <item name="android:colorPrimary">#F9A825</item>
+
+        <!-- <item name="android:background">#FDD835</item> -->
+
+        android:fontFamily="sans-serif"
+        android:fontFamily="sans-serif-light"
+        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif-thin"
+
+        <item name="android:fontFamily">sans-serif</item>
+
+        <style name="BeerButton" parent="@android:style/Widget.Button">
+            <item name="android:textSize">16sp</item>
+            <item name="android:textStyle">bold</item>
+            <item name="android:textColor">#dedfdc</item>
+            <item name="android:gravity">center</item>
+            <item name="android:shadowColor">#000000</item>
+            <item name="android:shadowDx">1</item>
+            <item name="android:shadowDy">1</item>
+            <item name="android:shadowRadius">0.6</item>
+            <item  name="android:background">@drawable/home_button</item>
+            <item name="android:padding">10dip</item>
+        </style>
+
+        <style name="CustomFontStyle">
+            <item name="android:layout_width">fill_parent</item>
+            <item name="android:layout_height">wrap_content</item>
+            <item name="android:capitalize">characters</item>
+            <item name="android:typeface">monospace</item>
+            <item name="android:textSize">12pt</item>
+            <item name="android:textColor">#00FF00</item>/>
+        </style>
     </style>
 
 </resources>
