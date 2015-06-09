@@ -66,6 +66,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.washington.beerswains.beerwench.MainActivity" />
         </activity>
+        <activity
+            android:name=".MyBeerList"
+            android:label="@string/title_activity_my_beer_list" >
+        </activity>
     </application>
 
 </manifest>

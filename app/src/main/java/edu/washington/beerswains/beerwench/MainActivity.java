@@ -54,6 +54,14 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+        Button myBeer = (Button) findViewById(R.id.myBeerButton);
+        myBeer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MyBeerList.class);
+                startActivity(intent);
+            }
+        });
         /*
         LatLng location = getLocationFromAddress("4224 University Way NE Seattle, WA 98105");
         if (location != null) {

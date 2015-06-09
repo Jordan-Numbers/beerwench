@@ -203,7 +203,8 @@ public class BeerSearch extends ActionBarActivity {
             .setNegativeButton("Add to My Beers", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-
+                    BeerApplication myApp = (BeerApplication) getApplication();
+                    myApp.addToList(selectedBeer);
                 }
             }
         ).show();
