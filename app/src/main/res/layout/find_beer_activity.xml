@@ -1,10 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/layout">
 
     <android.support.v7.widget.SearchView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.SearchView>
+        android:layout_height="wrap_content"
+        android:id="@+id/searchBox"></android.support.v7.widget.SearchView>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:id="@+id/controlGroup"
+        android:orientation="horizontal"
+        android:layout_height="53dp"
+        android:layout_gravity="center_horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by Beer Name"
+            android:id="@+id/searchBeer" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search by Abv"
+            android:id="@+id/searchAbv" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/noResults" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:isScrollContainer="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/beerList" />
 
 </LinearLayout>
