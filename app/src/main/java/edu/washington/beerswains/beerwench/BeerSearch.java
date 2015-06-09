@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class BeerSearch extends ActionBarActivity {
+public class BeerSearch extends android.app.Activity {
     private BeerFinder finder;
     private JSONObject results;
     private ArrayList<Beer> parseBeers = new ArrayList<Beer>();

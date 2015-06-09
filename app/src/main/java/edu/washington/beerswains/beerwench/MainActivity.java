@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends android.app.Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BeerMapActivity extends ActionBarActivity {
+public class BeerMapActivity extends android.app.Activity {
     private LocationManager mLocationManager;
     private GoogleMap map;
     private Beer beer;

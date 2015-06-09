@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 
-public class MyBeerList extends ActionBarActivity {
+public class MyBeerList extends android.app.Activity {
     private List<Beer> userBeers;
     private BeerApplication myApp;
     private ListView list;
