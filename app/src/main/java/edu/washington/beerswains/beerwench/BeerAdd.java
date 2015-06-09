@@ -65,6 +65,9 @@ public class BeerAdd extends ActionBarActivity {
         final ArrayList<Store> stores = new ArrayList<Store>();
         LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
         final ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseQuery findStores = ParseQuery.getQuery("Store").whereWithinMiles("map_location", start, 10.0);
         findStores.findInBackground(new FindCallback<ParseObject>() {
