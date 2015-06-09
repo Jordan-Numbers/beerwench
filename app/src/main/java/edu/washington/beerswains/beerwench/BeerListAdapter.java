@@ -48,7 +48,7 @@ public class BeerListAdapter extends ArrayAdapter<Beer> {
         beerName.setText(beer.getName());
 
         TextView beerPrice = (TextView) v.findViewById(R.id.price);
-        beerPrice.setText(beer.getDescription());
+	beerPrice.setText(beer.getDescription());
         beerPrice.setGravity(Gravity.LEFT);
 
         return v;
