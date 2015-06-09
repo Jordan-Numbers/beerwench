@@ -1,7 +1,6 @@
 package edu.washington.beerswains.beerwench;
 
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.parse.*;
 
 import java.io.Serializable;
 
@@ -9,6 +8,7 @@ import java.io.Serializable;
  * Created by Smyth on 6/6/2015.
  */
 
+@ParseClassName("Beer")
 public class Beer  extends ParseObject implements Serializable {
 
     private String name;
@@ -17,6 +17,10 @@ public class Beer  extends ParseObject implements Serializable {
     private String pictureUrl;
     private String id;
     private String description;
+
+    public Beer() {
+        super();
+    }
 
     public Beer(String name, String abv, String producer, String pictureUrl, String id, String description) {
         this.name = name;
@@ -56,6 +60,7 @@ public class Beer  extends ParseObject implements Serializable {
     }
 
     public void saveBeer() {
-        this.pinInBackground(BeerApplication);
+        ParseObject myBeer = this;
+        myBeer.pinInBackground();
     }
 }
