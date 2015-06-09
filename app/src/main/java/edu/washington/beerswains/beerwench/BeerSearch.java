@@ -1,5 +1,7 @@
 package edu.washington.beerswains.beerwench;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -134,13 +136,9 @@ public class BeerSearch extends ActionBarActivity {
             beerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> beerView, View v, int position, long id) {
-                    Intent intent = new Intent(BeerSearch.this, BeerMapActivity.class);
                     BeerListAdapter adapter = (BeerListAdapter) beerView.getAdapter();
                     Beer selectedBeer = adapter.getBeer(position);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("beer", selectedBeer);
-                    intent.putExtra("bundle", bundle);
-                    startActivity(intent);
+                    makeSelectedAlert(selectedBeer);
                 }
             });
         } else {
@@ -187,6 +185,28 @@ public class BeerSearch extends ActionBarActivity {
             populateResults(false);
         }
         return beers;
+    }
+
+    public void makeSelectedAlert(Beer beer) {
+        final Beer selectedBeer = beer;
+        new AlertDialog.Builder(BeerSearch.this).setTitle(beer.getName())
+            .setNeutralButton("View On Map", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent intent = new Intent(BeerSearch.this, BeerMapActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("beer", selectedBeer);
+                    intent.putExtra("bundle", bundle);
+                    startActivity(intent);
+                }
+            })
+            .setNegativeButton("Add to My Beers", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            }
+        ).show();
     }
 
 }
