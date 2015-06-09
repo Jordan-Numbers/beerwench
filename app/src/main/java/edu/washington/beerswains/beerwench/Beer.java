@@ -3,7 +3,12 @@ package edu.washington.beerswains.beerwench;
 /**
  * Created by Smyth on 6/6/2015.
  */
-public class Beer {
+
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+public class Beer extends ParseObject {
+
     private String name;
     private String abv;
     private String type;
@@ -34,5 +39,9 @@ public class Beer {
 
     public String getProducer() {
         return this.producer;
+    }
+
+    public static ParseQuery<Beer> getQuery() {
+        return ParseQuery.getQuery(Beer.class);
     }
 }
