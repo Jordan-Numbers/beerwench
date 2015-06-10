@@ -81,7 +81,7 @@ public class BeerMapActivity extends ActionBarActivity {
         }
         if (location != null) {
             LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 12));
         }
         loadStores(location);
     }
