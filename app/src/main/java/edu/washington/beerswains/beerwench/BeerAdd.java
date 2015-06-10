@@ -65,6 +65,9 @@ public class BeerAdd extends ActionBarActivity {
         final ArrayList<Store> stores = new ArrayList<Store>();
         LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
         final ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseQuery findStores = ParseQuery.getQuery("Store").whereWithinMiles("map_location", start, 10.0);
         findStores.findInBackground(new FindCallback<ParseObject>() {
@@ -95,11 +98,8 @@ public class BeerAdd extends ActionBarActivity {
                     final double price = Double.parseDouble(beerPrice.getText().toString());
                     final int position = selectedPosition;
                     Store store = (Store) storeList.getItemAtPosition(position);
-                    if (store == null || name == null || price == 0) {
+                    if (store == null || name.length() == 0 || price <= 0) {
                         Toast.makeText(BeerAdd.this, "Please Enter Values in all Fields!", Toast.LENGTH_LONG).show();
-                        //Log.e("store", store.toString());
-                        Log.e("name", name);
-                        Log.e("price", "" + price);
                     } else {
                         ParseQuery<ParseObject> verifyBeer = ParseQuery.getQuery("Beer").whereMatches("name", name);
                         verifyBeer.findInBackground(new FindCallback<ParseObject>() {
@@ -119,7 +119,7 @@ public class BeerAdd extends ActionBarActivity {
                         });
                     }
                 } catch(Exception e) {
-                    Toast.makeText(BeerAdd.this, "Exception", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BeerAdd.this, "Please Fill out all fields!!!", Toast.LENGTH_LONG).show();
                     //Log.e("exception caused by", e.getCause().toString());
                 }
 

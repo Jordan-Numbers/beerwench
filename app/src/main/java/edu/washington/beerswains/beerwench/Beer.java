@@ -45,4 +45,10 @@ public class Beer implements Serializable {
     public String getDescription() {
         return this.description;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        Beer otherBeer = (Beer) other;
+        return otherBeer.getId().equals(this.getId());
+    }
 }

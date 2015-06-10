@@ -74,16 +74,19 @@ public class BeerMapActivity extends ActionBarActivity {
     public void loadMap(GoogleMap map) {
         this.map = map;
         map.setMyLocationEnabled(true);
-        Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location;
+        location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location == null) {
+            location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
         if (location != null) {
             LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 12));
         }
-        loadStores();
+        loadStores(location);
     }
 
-    public void loadStores() {
-        Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    public void loadStores(Location location) {
         final ParseGeoPoint start = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         ParseQuery firstQuery = ParseQuery.getQuery("Beer").whereMatches("name", this.beer.getName());
         firstQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -106,7 +109,13 @@ public class BeerMapActivity extends ActionBarActivity {
                                                 ParseGeoPoint coordinates = (ParseGeoPoint) storeData.get("map_location");
                                                 String name = (String) storeData.get("name");
                                                 String address = (String) storeData.get("address");
-                                                double price = (double) object.get("price");
+                                                double price = 0;
+                                                try {
+                                                    price = (double) object.get("price");
+                                                } catch (Exception e2) {
+                                                    Integer price2 = (Integer) object.get("price");
+                                                    price = price2.intValue();
+                                                }
                                                 if (coordinates.distanceInMilesTo(start) <= 10) {
                                                     map.addMarker(new MarkerOptions().position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude())).title(name).snippet(address + " - $" + price));
                                                 }

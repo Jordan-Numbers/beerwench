@@ -66,47 +66,51 @@ public class BeerApplication extends Application {
     }
 
     public void addToList(Beer beer) {
-        userBeers.add(beer);
-        final Beer lBeer = beer;
-        ParseQuery query = ParseQuery.getQuery("Beer").whereMatches("name", beer.getName());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (objects.size() == 0) {
-                    ParseObject object = ParseObject.create("Beer");
-                    object.put("name", lBeer.getName());
-                    object.put("abv", lBeer.getAbv());
-                    object.put("dbId", lBeer.getId());
-                    object.put("description", lBeer.getDescription());
-                    object.put("image", lBeer.getPictureUrl());
-                    object.put("manufacturer", lBeer.getProducer());
-                    object.saveInBackground();
-                    parseBeerList.add(object);
-                } else {
-                    ParseObject object = objects.get(0);
-                    parseBeerList.add(object);
-                }
-                localParseData.put("beers", parseBeerList);
-                /*
-                localParseData.pinInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException ex) {
-                        if (ex == null) {
-                            Toast.makeText(getApplicationContext(), "Beer Successfully Added to Your Beers", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Unable to save beer", Toast.LENGTH_SHORT).show();
-                        }
+        if (!userBeers.contains(beer)) {
+            userBeers.add(beer);
+            final Beer lBeer = beer;
+            ParseQuery query = ParseQuery.getQuery("Beer").whereMatches("name", beer.getName());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (objects.size() == 0) {
+                        ParseObject object = ParseObject.create("Beer");
+                        object.put("name", lBeer.getName());
+                        object.put("abv", lBeer.getAbv());
+                        object.put("dbId", lBeer.getId());
+                        object.put("description", lBeer.getDescription());
+                        object.put("image", lBeer.getPictureUrl());
+                        object.put("manufacturer", lBeer.getProducer());
+                        object.saveInBackground();
+                        parseBeerList.add(object);
+                    } else {
+                        ParseObject object = objects.get(0);
+                        parseBeerList.add(object);
                     }
-                });
-                */
-                try {
-                    localParseData.pin();
-                    Toast.makeText(getApplicationContext(), "Beer Successfully Added to Your Beers", Toast.LENGTH_SHORT).show();
-                } catch (ParseException e1) {
-                    Toast.makeText(getApplicationContext(), "Unable to save beer", Toast.LENGTH_SHORT).show();
+                    localParseData.put("beers", parseBeerList);
+                    /*
+                    localParseData.pinInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException ex) {
+                            if (ex == null) {
+                                Toast.makeText(getApplicationContext(), "Beer Successfully Added to Your Beers", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Unable to save beer", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    */
+                    try {
+                        localParseData.pin();
+                        Toast.makeText(getApplicationContext(), "Beer Successfully Added to Your Beers", Toast.LENGTH_SHORT).show();
+                    } catch (ParseException e1) {
+                        Toast.makeText(getApplicationContext(), "Unable to save beer", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "You already have this beer in your list!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void removeFromList(Beer selectedBeer, int location) {
