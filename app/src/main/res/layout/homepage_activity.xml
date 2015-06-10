@@ -13,7 +13,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="80dp"
-        android:text="My Beer" />
+        android:text="My Beer"
+        android:background="#f9c401"
+        android:textSize="30sp"
+        android:textColor="#ffffffff"
+        android:typeface="sans" />
 
     <Button
         android:layout_width="match_parent"
@@ -22,7 +26,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/findBeerButton"
-        android:text="Find Beer" />
+        android:text="Find Beer"
+        android:background="#f9c401"
+        android:textSize="30sp"
+        android:textColor="#ffffffff"
+        android:typeface="sans" />
 
     <Button
         android:layout_width="match_parent"
@@ -32,5 +40,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="83dp"
         android:id="@+id/addBeerButton"
-        android:text="Add Beer" />
+        android:text="Add Beer"
+        android:background="#f9c401"
+        android:textSize="30sp"
+        android:textColor="#ffffffff"
+        android:typeface="sans" />
 </RelativeLayout>

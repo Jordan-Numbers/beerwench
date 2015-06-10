@@ -59,7 +59,9 @@
         android:id="@+id/submitButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="#f9c401"
+        android:textColor="#ffffffff" />
 
     <ListView
         android:layout_width="wrap_content"
